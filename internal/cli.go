@@ -3,6 +3,8 @@ package internal
 import (
 	"flag"
 	"fmt"
+	"log"
+	"net/http"
 
 	"github.com/sebasromero/tfs/internal/types"
 )
@@ -21,11 +23,19 @@ func Cli() {
 }
 
 func push() {
-	fmt.Print("push")
+	_, err := uploadFiles(flag.Args())
+	if err != nil {
+		log.Panic(err.Error())
+	}
 }
 
 func pull() {
-	fmt.Print("pull")
+
+	res, err := http.Get("http://localhost:8080/api/v1/pull/12")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(res.Body)
 }
 
 func help() {
