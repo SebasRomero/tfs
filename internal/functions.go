@@ -59,6 +59,7 @@ func uploadFiles(files []string) (*bytes.Buffer, error) {
 
 func getFiles(dst string) error {
 	fmt.Println(dst)
+	directoryName := fp.Join(dst, "/tfs-files")
 	res, err := http.Get("http://localhost:8080/api/v1/pull/12")
 
 	if err != nil {
@@ -115,7 +116,14 @@ func getFiles(dst string) error {
 			continue
 		}
 
-		out, err := os.Create(fp.Join(dst, fileName))
+		if _, err := os.Stat(directoryName); os.IsNotExist(err) {
+			err = os.Mkdir(directoryName, os.ModePerm)
+			if err != nil {
+				panic("Unable to create uploads directory")
+			}
+		}
+
+		out, err := os.Create(fp.Join(directoryName, fileName))
 		if err != nil {
 			fmt.Printf("error creating file %s: %v\n", fileName, err)
 			return err
