@@ -18,7 +18,7 @@ func Cli() {
 		if flag.Arg(1) == "--help" || flag.Arg(1) == "-h" {
 			helpPull()
 		} else {
-			pull(flag.Arg(1))
+			pull(flag.Arg(1), flag.Arg(2))
 		}
 	} else if *helpFlag {
 		help()
@@ -35,8 +35,8 @@ func push() {
 	}
 }
 
-func pull(dst string) {
-	err := getFiles(dst)
+func pull(dst string, directoryCode string) {
+	err := getFiles(dst, directoryCode)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
