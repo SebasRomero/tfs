@@ -57,10 +57,10 @@ func uploadFiles(files []string) (*bytes.Buffer, error) {
 	return body, nil
 }
 
-func getFiles(dst string) error {
+func getFiles(dst string, directory string) error {
 	fmt.Println(dst)
 	directoryName := fp.Join(dst, "/tfs-files")
-	res, err := http.Get("http://localhost:8080/api/v1/pull/12")
+	res, err := http.Get(os.Getenv("API_HOST") + "pull/" + directory)
 
 	if err != nil {
 		fmt.Printf("error making request: %v\n", err)
@@ -69,8 +69,7 @@ func getFiles(dst string) error {
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		fmt.Printf("server returned non-200 status: %v\n", res.Status)
-		return fmt.Errorf("server returned non-200 status: %v", res.Status)
+		return fmt.Errorf("no files found: %v", res.Status)
 	}
 
 	contentType := res.Header.Get("Content-Type")
