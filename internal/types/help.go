@@ -15,5 +15,5 @@ Run './tfs COMMAND --help' for more information about the command.
 `
 
 var HelpPull string = `
-Usage: ./tfs pull <directory path>
+Usage: ./tfs pull <directory path> <directory code>
 `
