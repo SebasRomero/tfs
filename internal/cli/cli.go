@@ -1,10 +1,11 @@
-package internal
+package cli
 
 import (
 	"flag"
 	"fmt"
 	"log"
 
+	"github.com/sebasromero/tfs/internal"
 	"github.com/sebasromero/tfs/internal/types"
 )
 
@@ -29,14 +30,14 @@ func Cli() {
 }
 
 func push() {
-	_, err := uploadFiles(flag.Args())
+	_, err := internal.UploadFiles(flag.Args())
 	if err != nil {
 		log.Panic(err.Error())
 	}
 }
 
 func pull(dst string, directoryCode string) {
-	err := getFiles(dst, directoryCode)
+	err := internal.GetFiles(dst, directoryCode)
 	if err != nil {
 		fmt.Println(err.Error())
 	}

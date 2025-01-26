@@ -14,7 +14,7 @@ import (
 
 var api_host = "https://api.tempfish.com/api/v1/"
 
-func uploadFiles(files []string) (*bytes.Buffer, error) {
+func UploadFiles(files []string) (*bytes.Buffer, error) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -59,7 +59,7 @@ func uploadFiles(files []string) (*bytes.Buffer, error) {
 	return body, nil
 }
 
-func getFiles(dst string, directory string) error {
+func GetFiles(dst string, directory string) error {
 	fmt.Println(dst)
 	directoryName := fp.Join(dst, "/tfs-files")
 	res, err := http.Get(api_host + "pull/" + directory)
