@@ -1,7 +1,9 @@
 package main
 
-import "github.com/sebasromero/tfs/internal"
+import (
+	"github.com/sebasromero/tfs/internal/cli"
+)
 
 func main() {
-	internal.Cli()
+	cli.Cli()
 }
