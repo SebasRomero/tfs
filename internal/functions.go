@@ -12,6 +12,8 @@ import (
 	"strings"
 )
 
+var api_host = "https://api.tempfish.com/api/v1/"
+
 func uploadFiles(files []string) (*bytes.Buffer, error) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
@@ -40,7 +42,7 @@ func uploadFiles(files []string) (*bytes.Buffer, error) {
 	}
 
 	fmt.Println(writer.Boundary())
-	resp, err := http.Post("http://localhost:8080/api/v1/push", writer.FormDataContentType(), body)
+	resp, err := http.Post(api_host+"push", writer.FormDataContentType(), body)
 	if err != nil {
 		return nil, fmt.Errorf("error making POST request: %w", err)
 	}
@@ -60,7 +62,7 @@ func uploadFiles(files []string) (*bytes.Buffer, error) {
 func getFiles(dst string, directory string) error {
 	fmt.Println(dst)
 	directoryName := fp.Join(dst, "/tfs-files")
-	res, err := http.Get(os.Getenv("API_HOST") + "pull/" + directory)
+	res, err := http.Get(api_host + "pull/" + directory)
 
 	if err != nil {
 		fmt.Printf("error making request: %v\n", err)
