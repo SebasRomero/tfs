@@ -41,14 +41,12 @@ func UploadFiles(files []string) (*bytes.Buffer, error) {
 		return nil, fmt.Errorf("error closing writer: %w", err)
 	}
 
-	fmt.Println(writer.Boundary())
 	resp, err := http.Post(api_host+"push", writer.FormDataContentType(), body)
 	if err != nil {
 		return nil, fmt.Errorf("error making POST request: %w", err)
 	}
 	defer resp.Body.Close()
 
-	fmt.Println("Server response status:", resp.Status)
 	respBody := &bytes.Buffer{}
 	_, err = io.Copy(respBody, resp.Body)
 	if err != nil {
@@ -60,7 +58,6 @@ func UploadFiles(files []string) (*bytes.Buffer, error) {
 }
 
 func GetFiles(dst string, directory string) error {
-	fmt.Println(dst)
 	directoryName := fp.Join(dst, "/tfs-files")
 	res, err := http.Get(api_host + "pull/" + directory)
 
@@ -75,7 +72,6 @@ func GetFiles(dst string, directory string) error {
 	}
 
 	contentType := res.Header.Get("Content-Type")
-	fmt.Printf("Content-Type: %s\n", contentType)
 
 	if !strings.HasPrefix(contentType, "multipart/") {
 		fmt.Println("response is not multipart")
@@ -93,7 +89,6 @@ func GetFiles(dst string, directory string) error {
 		fmt.Println("no boundary found in Content-Type")
 		return fmt.Errorf("no boundary found in Content-Type")
 	}
-	fmt.Printf("Boundary: %s\n", boundary)
 
 	mr := multipart.NewReader(res.Body, boundary)
 
